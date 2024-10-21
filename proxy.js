@@ -98,7 +98,7 @@ if (req.method === 'GET') {
             .catch((error) => {
                 if (error.code === 'ENOENT') {
                     res.writeHead(404, { 'Content-Type': 'text/plain' });
-                    res.end('Image not found');
+                    res.end('Image not found' );
                 } else {
                     res.writeHead(500, { 'Content-Type': 'text/plain' });
                     res.end('Error deleting the image');
