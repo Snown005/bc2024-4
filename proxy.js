@@ -12,7 +12,7 @@ program
 program.parse();
 const options = program.opts();
 
-if (!options.host ||!options.port|| !options.cache) {
+if (!options.host || !options.port || !options.cache) {
     console.error('Всі параметри є обов’язковими: --host, --port, --cache');
     process.exit(1);
 }
@@ -21,7 +21,7 @@ function readFile(filePath) {
     return fsPromises.readFile(filePath)
         .then((data) => data)
         .catch((error) => {
-            console.error('Error reading file:', error);
+            console.error('Помилка читання файлу:', error);
             throw error;
         });
 }
@@ -29,10 +29,10 @@ function readFile(filePath) {
 function writeFile(filePath, data) {
     return fsPromises.writeFile(filePath, data)
         .then(() => {
-            console.log(`File written successfully to ${filePath}`);
+            console.log(`Файл записаний успішно в ${filePath}`);
         })
         .catch((error) => {
-            console.error('Error writing file:', error);
+            console.error('Помилка запису файлу:', error);
             throw error;
         });
 }
@@ -58,9 +58,9 @@ if (req.method === 'GET') {
                     res.end(response.body); 
                 })
                 .catch((error) => {
-                    console.error(`Error fetching image from http.cat: ${error.message}`);
+                    console.error(`Помилка зтягування фото з http.cat: ${error.message}`);
                     res.writeHead(404, { 'Content-Type': 'text/plain' });
-                    res.end('Image not found on http.cat');
+                    res.end('Фото не знайдено на http.cat');
                 });
         });
 }   
@@ -81,32 +81,32 @@ if (req.method === 'GET') {
                                 })
                                 .catch(() => {
                                     res.writeHead(500, { 'Content-Type': 'text/plain' });
-                                    res.end('Error writing image to cache');
+                                    res.end('Помилка запису фото в кеш');
                                 });
                         })
-                        .catch((error) => {
+                        .catch((error ) => {
                             res.writeHead(404, { 'Content-Type': 'text/plain' });
-                            res.end('Image not found on http.cat');
+                            res.end('Фото не знайдено в http.cat');
                         });
                 }); 
     } else if (req.method === 'DELETE') {
         deleteFile(imagePath)
             .then(() => {
                 res.writeHead(200, { 'Content-Type': 'text/plain' });
-                res.end('Image is deleted');
+                res.end('Фото видалене');
             })
             .catch((error) => {
                 if (error.code === 'ENOENT') {
                     res.writeHead(404, { 'Content-Type': 'text/plain' });
-                    res.end('Image not found' );
+                    res.end('Фото не знайдене' );
                 } else {
                     res.writeHead(500, { 'Content-Type': 'text/plain' });
-                    res.end('Error deleting the image');
+                    res.end('Помилка видалення фото');
                 }
             });
     } else {
         res.writeHead(405, { 'Content-Type': 'text/plain' });
-        res.end('Method is not allowed');
+        res.end('Метод не дозволений');
     }
 });
 
